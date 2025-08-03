@@ -42,32 +42,44 @@ exports.subscribeToPlan = async (req, res) => {
 };
 
 // Cancel a subscription
-exports.cancelSubscription = async (req, res) => {
+exports.cancelSubscription = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id;
     const subscription = await Subscription.findByIdAndUpdate(
       id,
       { status: "cancelled" },
       { new: true }
     );
-    if (!subscription)
+    if (!subscription) {
       return res.status(404).json({ message: "Subscription not found" });
-    res.status(200).json({ message: "Subscription cancelled", subscription });
+    }
+
+    res.status(200).json({
+      message: "Subscription cancelled",
+      subscription,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error cancelling subscription", error: error.message });
+    res.status(500).json({
+      message: "Error cancelling subscription",
+      error: error.message,
+    });
   }
 };
 
 // Get all subscriptions
-exports.getAllSubscriptions = async (req, res) => {
+exports.getAllSubscriptions = async (req, res, next) => {
   try {
     const subscriptions = await Subscription.find().populate("planId");
-    res.status(200).json(subscriptions);
+    res.status(200).json({
+      message: "Subscriptions fetched successfully",
+      data: {
+        subscriptions,
+      },
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error getting subscriptions", error: error.message });
+    res.status(500).json({
+      message: "Error getting subscriptions",
+      error: error.message,
+    });
   }
 };

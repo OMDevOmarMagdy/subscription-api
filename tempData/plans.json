@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Basic Plan",
+    "price": 49,
+    "duration": 30,
+    "description": "Access to standard features",
+    "isActive": true
+  },
+  {
+    "name": "Premium Plan",
+    "price": 99,
+    "duration": 60,
+    "description": "Includes all features plus priority support",
+    "isActive": true
+  },
+  {
+    "name": "Annual Plan",
+    "price": 299,
+    "duration": 365,
+    "description": "Full access for one year",
+    "isActive": true
+  },
+  {
+    "name": "Student Plan",
+    "price": 29,
+    "duration": 30,
+    "description": "Discounted access for students",
+    "isActive": true
+  },
+  {
+    "name": "Trial Plan",
+    "price": 0,
+    "duration": 7,
+    "description": "Limited features for trial period",
+    "isActive": true
+  }
+]

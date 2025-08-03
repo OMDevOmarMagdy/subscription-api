@@ -5,17 +5,22 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "The user must have a name"],
+      trim: true, // To remove the space from begining and ending
+      minlength: 2,
     },
     email: {
       type: String,
+      required: [true, "The user must have an email"],
       unique: true,
-      required: true,
       lowercase: true,
+      trim: true,
+      match: [/\S+@\S+\.\S+/, "Invalid email format"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "The user must have a password"],
+      select: false,
       minlength: 6,
     },
     role: {
@@ -36,7 +41,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // Compare passwords
-userSchema.methods.comparePassword = function (enteredPassword) {
+userSchema.methods.comparePassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };
 

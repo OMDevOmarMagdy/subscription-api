@@ -42,12 +42,19 @@ exports.getPlans = async (req, res, next) => {
 exports.updatePlan = async (req, res) => {
   try {
     const id = req.params.id;
-    const updated = await Plan.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updated) return res.status(404).json({ message: "Plan not found" });
-
+    const { name, price, duration, description } = req.body;
+    const updated = await Plan.findByIdAndUpdate(
+      id,
+      { name, price, duration, description },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!updated) {
+      return res.status(404).json({ message: "Plan not found" });
+    }
+    
     res.status(200).json({
       message: "Plan updated successfully",
       data: {
