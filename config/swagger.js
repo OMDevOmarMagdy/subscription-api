@@ -9,6 +9,9 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: "https://subscription-api-production-7985.up.railway.app",
+      },
+      {
         url: "http://localhost:3000",
       },
     ],
