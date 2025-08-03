@@ -1,7 +1,9 @@
 const Subscription = require("../models/subscriptionsModel");
 const Plan = require("../models/planModel");
 const paymentGateway = require("../dummy-payment/paymentGateway");
+const response = require("../utils/response");
 
+// I used response functino in only subscribeToPlan and i want to use it in each function but i have no time to do it
 // Subscribe user to a plan
 exports.subscribeToPlan = async (req, res) => {
   try {
@@ -9,13 +11,10 @@ exports.subscribeToPlan = async (req, res) => {
     const userId = req.user.id;
 
     const plan = await Plan.findById(planId);
-    if (!plan) return res.status(404).json({ message: "Plan not found" });
+    if (!plan) return response(res, 404, "Plan not found");
 
     const paymentResult = await paymentGateway.processPayment(plan.price);
-
-    if (!paymentResult.success) {
-      return res.status(400).json({ message: "Payment failed" });
-    }
+    if (!paymentResult.success) response(res, 400, "Payment failed");
 
     const endDate = new Date();
     endDate.setDate(endDate.getDate() + plan.duration);
@@ -29,15 +28,9 @@ exports.subscribeToPlan = async (req, res) => {
         amount: paymentResult.amount,
       },
     });
-
-    res.status(201).json({
-      message: "Subscription successful",
-      subscription: newSubscription,
-    });
+    response(res, 201, "Subscription successful", newSubscription);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Subscription failed", error: error.message });
+    response(res, 500, "Subscription failed", undefined, error);
   }
 };
 

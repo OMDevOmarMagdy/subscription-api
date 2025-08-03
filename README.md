@@ -84,7 +84,7 @@ exports.processPayment = async (amount) => {
 ### 🔽 Clone the repository
 
 ```bash
-git clone https://github.com/your-username/subscription-api.git
+git clone https://github.com/OMDevOmarMagdy/subscription-api
 cd subscription-api
 ```
 
